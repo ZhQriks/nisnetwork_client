@@ -231,8 +231,6 @@ const Header = (): JSX.Element => {
               nis.network
             </Title>
           }
-          sx={{ backgroundColor: '#28B670' }}
-          color='#28B670'
           zIndex={1000000}
         >
           <Divider my='sm' mx='-md' color='gray.1' />

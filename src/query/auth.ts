@@ -21,7 +21,7 @@ export type RegisterCredentials = {
   major1: string;
   major2: string;
   password: string;
-  group: number;
+  group: number | null;
 };
 async function handleUserResponse(data: AuthResponse): Promise<AuthResponse> {
   storage.setToken(data);

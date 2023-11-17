@@ -26,6 +26,7 @@ interface FormData {
   major2: string;
   password: string;
   group: number | null;
+  grade_letter: string;
 }
 
 const Register = (): JSX.Element => {

@@ -13,7 +13,7 @@ export interface User {
   first_name: string;
   last_name: string;
   grade: number;
-  grade_letter: string;
+  gradeLetter: string;
   major1: string;
   major2: string;
   group: number;

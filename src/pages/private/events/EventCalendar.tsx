@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Carousel } from '@mantine/carousel';
 import {
   Container,
   createStyles,
@@ -21,9 +22,7 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 // import { Eventcalendar, toast } from '@mobiscroll/react';
 import { format } from 'date-fns';
-
 import useEvents from 'query/events';
-import { Carousel } from '@mantine/carousel';
 
 import useCreateEvent from '../../../query/eventCreate';
 import ImageCard from '../../shared/ImageCard';
@@ -144,107 +143,19 @@ const EventCalendar = (): JSX.Element => {
           </Carousel>
           <Box>
             <Title order={3}>
-              Календарь мероприятий и событий{' '}
+              Календарь{' '}
               <Text component='span' color='primaryGreen'>
-                (Нажмите для участия)
+                мероприятий и событий
               </Text>
             </Title>
             <Text mb='md' size='sm'>
-              Календарь может содержать информацию о различных экологических мероприятиях, событиях
-              и
+              Календарь может содержать информацию о различных мероприятиях, событиях и
               <br />
-              праздниках, которые проходят по всему миру. Нажмите для показа
+              праздниках, которые проходят по нашей школе. Нажмите для показа
             </Text>
-            <Group my='sm' position='right'>
-              <Button onClick={openModal}>Создать эко-мероприятие</Button>
-            </Group>
           </Box>
         </Stack>
       </Container>
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        title={
-          <Title order={3} color='primaryGreen'>
-            Участие на мероприятии
-          </Title>
-        }
-        overlayProps={{ opacity: 0.5, blur: 4 }}
-        position='right'
-        zIndex={1001}
-        size='lg'
-      >
-        {currentEvent && (
-          <>
-            <Title order={4} mb='sm'>
-              {currentEvent.title}
-            </Title>
-            <Text>
-              <Text component='span' fw={600}>
-                Дата начала:
-              </Text>{' '}
-              {format(Date.parse(currentEvent.start), 'do MMMM Y')}
-            </Text>
-            <Text mb='sm'>
-              <Text component='span' fw={600}>
-                Дата окончания:
-              </Text>{' '}
-              {format(Date.parse(currentEvent?.end), 'do MMMM Y')}
-            </Text>
-            <Text fw={600}>Описание:</Text>
-            <Text>{currentEvent.description}</Text>
-            <Group position='right' mt='md'>
-              <Button
-                onClick={() => {
-                  closeDrawer();
-                }}
-              >
-                Участвовать!
-              </Button>
-            </Group>
-          </>
-        )}
-      </Drawer>
-      <Modal opened={modalOpened} onClose={closeModal} title='Event' centered size='lg'>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            <TextInput
-              required
-              label='Название'
-              placeholder='Мероприятие'
-              {...form.getInputProps('title')}
-              radius='md'
-            />
-            <DateInput
-              required
-              label='Дата начала'
-              placeholder='Дата'
-              {...form.getInputProps('start')}
-              radius='md'
-            />
-            <DateInput
-              required
-              label='Дата окончания'
-              placeholder='Дата'
-              {...form.getInputProps('end')}
-              radius='md'
-            />
-            <Textarea
-              required
-              label='Описание'
-              placeholder='Ход мероприятия'
-              {...form.getInputProps('description')}
-            />
-            <Box>
-              <Text>Цвет мероприятия: </Text>
-              <ColorPicker {...form.getInputProps('color')} />
-            </Box>
-            <Group position='right'>
-              <Button type='submit'>Создать</Button>
-            </Group>
-          </Stack>
-        </form>
-      </Modal>
     </>
   );
 };

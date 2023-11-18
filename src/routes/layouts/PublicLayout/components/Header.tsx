@@ -100,7 +100,6 @@ const Header = (): JSX.Element => {
       title: 'Конакты',
       path: '/',
     },
-    { path: '/buy', title: 'Устойчивые покупки' },
   ];
 
   const auth_routes = [

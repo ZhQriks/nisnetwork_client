@@ -4,7 +4,7 @@ import { backendUrl } from 'utils/consts';
 
 interface ClassroomQueryParams {
   group_number?: string;
-  week_day?: string;
+  week_day?: number;
   grade_letter?: string;
   grade?: number;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { Carousel } from '@mantine/carousel';
 import {
   Container,
   createStyles,
@@ -15,9 +16,26 @@ import {
   useMantineTheme,
   Anchor,
   Flex,
+  Tabs,
+  Card,
+  Button,
+  Group,
+  Badge,
+  Center,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { Eventcalendar } from '@mobiscroll/react';
+
+import {
+  IconNumber1,
+  IconNumber2,
+  IconNumber3,
+  IconNumber4,
+  IconNumber5,
+  IconNumber6,
+  IconNumber7,
+  IconPhoto,
+} from '@tabler/icons-react';
 
 import { useUser } from '../../../query/auth';
 import useClassrooms from '../../../query/schedule';
@@ -93,32 +111,102 @@ interface ActivityEvent {
 }
 
 const PRIMARY_COL_HEIGHT = rem(300);
+const lessonsSchedule = [
+  { start: '8:30', end: '9:10', lesson: 'Lesson 1' },
+  { start: '9:30', end: '10:10', lesson: 'Lesson 2' },
+  { start: '10:15', end: '10:55', lesson: 'Lesson 3' },
+  { start: '11:00', end: '11:40', lesson: 'Lesson 4' },
+  { start: '11:50', end: '12:30', lesson: 'Lesson 5' },
+  { start: '13:00', end: '13:40', lesson: 'Lesson 6' },
+  { start: '13:50', end: '14:30', lesson: 'Lesson 7' },
+  { start: '14:35', end: '15:15', lesson: 'Lesson 8' },
+];
+
+const ScheduleCards = ({ classes, user }: { classes: any[]; user: any }): JSX.Element => {
+  const sortedClasses = classes.sort((a, b) => a.classOrder - b.classOrder);
+  const filteredClasses = sortedClasses.filter(
+    c => c.grade === user.grade && c.gradeLetter === user.gradeLetter,
+  );
+
+  return (
+    <Stack mt='xl'>
+      {filteredClasses.map(
+        ({
+          subject,
+          teacherName,
+          weekDay,
+          groupNumber,
+          classroom,
+          classOrder,
+          grade,
+          gradeLetter,
+        }) => (
+          <Group position='center'>
+            <Card
+              shadow='sm'
+              radius='md'
+              withBorder
+              w='10%'
+              padding={0}
+              h='100px'
+            >
+              <Group align='center' position='center' h='100%'>
+                <Title order={3}>{classOrder}</Title>
+              </Group>
+            </Card>
+            <Card
+              shadow='sm'
+              padding='lg'
+              radius='md'
+              withBorder
+              w='70%'
+              h='100px'
+            >
+              <Group position='apart' mt='xs' mb='xs'>
+                <Text fw={500}>{subject}</Text>
+                <Badge color='lime' variant='light'>
+                  {classroom} кабинет
+                </Badge>
+              </Group>
+              <Group position='apart' mt='xs' mb='xs'>
+                <Text size='sm' c='dimmed'>
+                  {teacherName}
+                </Text>
+                <Text>{groupNumber}</Text>
+              </Group>
+            </Card>
+          </Group>
+        ),
+      )}
+    </Stack>
+  );
+};
+
 const Products = (): JSX.Element => {
   const { classes } = useStyles();
   const user = useUser();
   const { data: userData } = user;
+  const [weekDay, setWeekDay] = useState<number>(0);
+  const [groupNumber, setGroupNumber] = useState(userData?.group);
+  const [gradeLetter, setGradeLetter] = useState(userData?.grade_letter);
+  const [grade, setGrade] = useState(userData?.grade);
+
+  const iconStyle = { width: rem(12), height: rem(12) };
 
   const queryParams = {
-    group_number: userData?.group,
-    grade_letter: userData?.grade_letter,
-    grade: userData?.grade,
+    group_number: groupNumber,
+    grade_letter: gradeLetter,
+    grade,
+    week_day: weekDay,
+  };
+  const handleTabChange = (value: string) => {
+    setWeekDay(Number(value));
   };
 
   const { data: classrooms, isLoading, error } = useClassrooms(queryParams);
   const theme = useMantineTheme();
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - ${theme.spacing.md} / 2)`;
   const [currentLesson, setCurrentLesson] = useState<string>('На данный момент нет уроков');
-
-  const lessonsSchedule = [
-    { start: '8:30', end: '9:10', lesson: 'Lesson 1' },
-    { start: '9:30', end: '10:10', lesson: 'Lesson 2' },
-    { start: '10:15', end: '10:55', lesson: 'Lesson 3' },
-    { start: '11:00', end: '11:40', lesson: 'Lesson 4' },
-    { start: '11:50', end: '12:30', lesson: 'Lesson 5' },
-    { start: '13:00', end: '13:40', lesson: 'Lesson 6' },
-    { start: '13:50', end: '14:30', lesson: 'Lesson 7' },
-    { start: '14:35', end: '15:15', lesson: 'Lesson 8' },
-  ];
 
   const checkCurrentLesson = () => {
     const now = new Date();
@@ -140,10 +228,16 @@ const Products = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log('classrooms', classrooms);
-    console.log('queryParams', queryParams);
-    console.log('user', userData);
-  }, [classrooms, queryParams]);
+    const today = new Date();
+    const currentDay = today.getDay() + 1 - 3;
+    setWeekDay(currentDay);
+  }, []);
+
+  useEffect(() => {
+    setGroupNumber(userData?.group);
+    setGradeLetter(userData?.grade_letter);
+    setGrade(userData?.grade);
+  }, [userData]);
   return (
     <>
       <Container maw='80rem' pt={30}>
@@ -164,15 +258,6 @@ const Products = (): JSX.Element => {
               </Text>
             </Flex>
             <Grid gutter='md'>
-              <Grid.Col>
-                <ImageCard
-                  image={data[1].image}
-                  title=''
-                  author=''
-                  height={SECONDARY_COL_HEIGHT}
-                  width='100%'
-                />
-              </Grid.Col>
               <Grid.Col span={6}>
                 <ImageCard
                   image={data[2].image}
@@ -193,13 +278,81 @@ const Products = (): JSX.Element => {
               </Grid.Col>
             </Grid>
           </SimpleGrid>
-          <Box>
-            <Title order={3}>Календарь устойчивых покупок </Title>
-            <Text mb='md' size='sm'>
-              Когда лучше всего покупать экологические товары и продукты, чтобы сэкономить <br />
-              деньги и уменьшить свой углеродный след.
-            </Text>
+          <Box w='100%'>
+            <Title order={3}>Привет👋🏻, {user?.data?.firstName}</Title>
           </Box>
+          <Center w='100%'>
+            <Tabs
+              defaultValue={weekDay.toString()}
+              value={weekDay.toString()}
+              onTabChange={handleTabChange}
+              variant='pills'
+              mx='auto'
+            >
+              <Tabs.List>
+                <Tabs.Tab value='1' icon={<IconNumber1 style={iconStyle} />}>
+                  Понедельник
+                </Tabs.Tab>
+                <Tabs.Tab value='2' icon={<IconNumber2 style={iconStyle} />}>
+                  Вторник
+                </Tabs.Tab>
+                <Tabs.Tab value='3' icon={<IconNumber3 style={iconStyle} />}>
+                  Среда
+                </Tabs.Tab>
+                <Tabs.Tab value='4' icon={<IconNumber4 style={iconStyle} />}>
+                  Четверг
+                </Tabs.Tab>
+                <Tabs.Tab value='5' icon={<IconNumber5 style={iconStyle} />}>
+                  Пятница
+                </Tabs.Tab>
+                <Tabs.Tab value='6' icon={<IconNumber6 style={iconStyle} />}>
+                  Суббота
+                </Tabs.Tab>
+                <Tabs.Tab value='7' icon={<IconNumber7 style={iconStyle} />}>
+                  Воскресенье
+                </Tabs.Tab>
+              </Tabs.List>
+
+              <Tabs.Panel value='1'>
+                {classrooms && userData && Array.isArray(classrooms) && (
+                  <ScheduleCards classes={classrooms} user={userData} />
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value='2'>
+                {classrooms && userData && Array.isArray(classrooms) && (
+                  <ScheduleCards classes={classrooms} user={userData} />
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value='3'>
+                {classrooms && userData && Array.isArray(classrooms) && (
+                  <ScheduleCards classes={classrooms} user={userData} />
+                )}
+              </Tabs.Panel>
+              <Tabs.Panel value='4'>
+                {classrooms && userData && Array.isArray(classrooms) && (
+                  <ScheduleCards classes={classrooms} user={userData} />
+                )}
+              </Tabs.Panel>
+              <Tabs.Panel value='5'>
+                {classrooms && userData && Array.isArray(classrooms) && (
+                  <ScheduleCards classes={classrooms} user={userData} />
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value='6'>
+                <Title align='center' mt='xl'>
+                  Вы прошли эту неделю! Ждите следующей незабываемой недели!
+                </Title>
+              </Tabs.Panel>
+              <Tabs.Panel value='7'>
+                <Title align='center' mt='xl'>
+                  Вы прошли эту неделю! Ждите следующей незабываемой недели!
+                </Title>
+              </Tabs.Panel>
+            </Tabs>
+          </Center>
         </Stack>
       </Container>
     </>

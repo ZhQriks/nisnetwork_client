@@ -93,11 +93,11 @@ const Header = (): JSX.Element => {
     },
     {
       title: 'Функции',
-      path: '/',
+      path: '#functions',
     },
     {
-      title: 'Конакты',
-      path: '/',
+      title: 'Контакты',
+      path: '#functions',
     },
   ];
 

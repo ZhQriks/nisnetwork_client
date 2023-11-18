@@ -117,7 +117,7 @@ const SectionCards = (): JSX.Element => {
   ));
 
   return (
-    <Container size='lg' py='xl'>
+    <Container size='lg' py='xl' id='functions'>
       <Title order={2} className={classes.title} ta='center' mt='sm'>
         Основные разделы сайта
       </Title>

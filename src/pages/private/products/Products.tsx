@@ -147,10 +147,10 @@ const ScheduleCards = ({ classes, user }: { classes: any[]; user: any }): JSX.El
             <Card shadow='sm' radius='md' withBorder w='10%' padding={0} h='100px'>
               <Group align='center' position='center' h='100%'>
                 <Title order={3}>{classOrder}</Title>
-                <Text size='xs'>
-                  {lessonsSchedule[classOrder - 1].start}-{lessonsSchedule[classOrder - 1].end}
-                </Text>
               </Group>
+              <Text size='xs' align='center'>
+                {lessonsSchedule[classOrder - 1].start}-{lessonsSchedule[classOrder - 1].end}
+              </Text>
             </Card>
             <Card shadow='sm' padding='lg' radius='md' withBorder w='70%' h='100px'>
               <Group position='apart' mt='xs' mb='xs'>

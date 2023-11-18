@@ -7,7 +7,6 @@ import {
   Group,
   Header as MantineHeader,
   Button,
-  Image,
   Divider,
   Stack,
   MediaQuery,
@@ -102,7 +101,7 @@ const Header = (): JSX.Element => {
     },
   ];
 
-  const auth_routes = [
+  const authRoutes = [
     {
       title: 'Home',
       path: '/',
@@ -152,7 +151,7 @@ const Header = (): JSX.Element => {
             </Link>
 
             <Group className={classes.hiddenMobile} sx={{ height: '100%' }} spacing={0}>
-              {(user.data ? auth_routes : routes).map(route => (
+              {(user.data ? authRoutes : routes).map(route => (
                 <Link
                   key={route.path}
                   to={route.path}
@@ -166,7 +165,7 @@ const Header = (): JSX.Element => {
             </Group>
 
             {user.data ? (
-              <Group>
+              <Group className={classes.hiddenMobile}>
                 <UnstyledButton component={Link} to='/'>
                   <Group>
                     <Avatar color='green' radius='xl' />
@@ -197,19 +196,21 @@ const Header = (): JSX.Element => {
                 </Button>
               </Group>
             )}
-            <Button
-              px={20}
-              onClick={openModal}
-              radius='xl'
-              className={classes.hiddenDesktop}
-              sx={{
-                background:
-                  'linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.20) 100%)',
-                backdropFilter: 'blur(12.822856903076172px)',
-              }}
-            >
-              Подробнее
-            </Button>
+            {!user.data && (
+              <Button
+                px={20}
+                onClick={openModal}
+                radius='xl'
+                className={classes.hiddenDesktop}
+                sx={{
+                  background:
+                    'linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.20) 100%)',
+                  backdropFilter: 'blur(12.822856903076172px)',
+                }}
+              >
+                Подробнее
+              </Button>
+            )}
             <Burger
               className={classes.hiddenDesktop}
               color='white'
@@ -234,7 +235,7 @@ const Header = (): JSX.Element => {
         >
           <Divider my='sm' mx='-md' color='gray.1' />
           <Stack spacing='xs'>
-            {(user.data ? auth_routes : routes).map(route => (
+            {(user.data ? authRoutes : routes).map(route => (
               <Link
                 key={route.path}
                 to={route.path}
@@ -247,6 +248,22 @@ const Header = (): JSX.Element => {
                 {route.title}
               </Link>
             ))}
+            <Divider my='sm' mx='-md' color='gray.1' />
+            <Group className={classes.hiddenDesktop}>
+              <UnstyledButton component={Link} to='/'>
+                <Group>
+                  <Avatar color='green' radius='xl' />
+                  {user?.data?.firstName && (
+                    <Text size='sm' weight={500} color='white'>
+                      {`${user?.data?.firstName} ${user.data?.lastName}`}
+                    </Text>
+                  )}
+                </Group>
+              </UnstyledButton>
+              <Anchor size='xs' color='red' onClick={logoutHandler}>
+                Выйти
+              </Anchor>
+            </Group>
           </Stack>
         </Drawer>
       </MediaQuery>

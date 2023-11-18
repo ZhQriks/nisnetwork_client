@@ -12,10 +12,13 @@ import {
   Drawer,
   Button,
   Group,
-  Modal,
+  Image,
   TextInput,
   Textarea,
   ColorPicker,
+  Card,
+  Badge,
+  SimpleGrid,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
@@ -29,30 +32,48 @@ import ImageCard from '../../shared/ImageCard';
 
 const data = [
   {
-    image:
-      'https://recycle.kz/storage/app/uploads/public/61c/9bb/9a8/thumb_668_436_287_0_0_crop.jpg',
-    title: 'В Нур-Султане подвели итоги экологической акции «ЭкоАсар: марафон добрых дел»',
+    image: 'https://i.imgur.com/4PaqJ4s.png',
+    title: '.',
   },
   {
-    image:
-      'https://recycle.kz/storage/app/uploads/public/61c/5bc/b9b/thumb_664_436_287_0_0_crop.jpg',
-    title: 'В столице провели мастер-класс по утилизации отходов',
+    image: 'https://i.imgur.com/t84S0Rx.png',
+    title: '.',
   },
   {
-    image:
-      'https://recycle.kz/storage/app/uploads/public/61c/2fe/9a5/thumb_661_436_287_0_0_crop.jpg',
-    title:
-      'Подведены итоги детского конкурса на лучшее озвучивание эко-сказки «Приключения Гринэйков»!',
+    image: 'https://i.imgur.com/2fyFK2H.png',
+    title: '.',
+  },
+];
+
+const eventsDataMock = [
+  {
+    title: 'Офис по управлению набором студентов Назарбаев Университета приглашает Вас',
+    description:
+      '13 ноября в 16:00 (по времени Астаны)* - “Как заполнить анкетную форму”. Во время вебинара Вы узнаете, как правильно заполнить анкету для программ Бакалавриата и Foundation.',
+    image: 'https://i.imgur.com/tBJM4G8.jpg',
+    time: '13 ноября, 16:00',
   },
   {
-    image:
-      'https://recycle.kz/storage/app/uploads/public/61b/6cc/7d8/thumb_567_436_287_0_0_crop.jpg',
-    title: 'Подведены итоги первой в Казахстане экологической премии',
+    title: 'Добрый день! 15 ноября приглашаем на встречу с представителем UBC',
+    description:
+      'Университет Британской Колумбии — один из ведущих исследовательских университетов Канады. Место проведения📍: конференц-зал. Время: 🕒15:00. Регистрация обязательна ',
+    image: 'https://i.imgur.com/9ErXJcW.jpg',
+    time: '15 ноября, 15:00',
   },
   {
-    image:
-      'https://recycle.kz/storage/app/uploads/public/61a/1c6/861/thumb_442_436_287_0_0_crop.jpg',
-    title: 'Мастеркласс по утилизацие мусора',
+    title: 'ВЕБИНАР: Образование в Южной Корее',
+    description:
+      'Присоединяйтесь к нам на вебинар, где мы расскажем о возможностях обучения в Южной Корее!\n' +
+      '📅 16 ноября, в 20:00\n',
+    image: 'https://i.imgur.com/0QujRKb.jpg',
+    time: '16 ноября, 20:00',
+  },
+  {
+    title: 'Приглашаем на встречу с представителями Kорейского университета Woosong University',
+    description:
+      'Место проведения: Актовый зал. Время: 17 ноября в 15:00*. Престижный университет Woosong University, расположенный в Южной Корее городе Тэджон и принадлежащий известному образовательному фонду Woosong',
+    image: 'https://i.imgur.com/S2bNTvs.jpg',
+    time: '17 ноября, 15:00',
   },
 ];
 
@@ -154,6 +175,34 @@ const EventCalendar = (): JSX.Element => {
               праздниках, которые проходят по нашей школе. Нажмите для показа
             </Text>
           </Box>
+          <SimpleGrid
+            cols={2}
+            spacing='lg'
+            breakpoints={[
+              { maxWidth: 'md', cols: 3, spacing: 'md' },
+              { maxWidth: 'sm', cols: 2, spacing: 'sm' },
+              { maxWidth: 'xs', cols: 1, spacing: 'sm' },
+            ]}
+          >
+            {eventsDataMock.map((event: any) => (
+              <Card shadow='sm' padding='lg' radius='md' withBorder maw={400} mx='auto'>
+                <Card.Section>
+                  <Image src={event.image} height={250} alt='Norway' />
+                </Card.Section>
+
+                <Group position='apart' mt='md' mb='xs'>
+                  <Text fw={500}>{event.title}</Text>
+                  <Badge color='green' variant='light'>
+                    {event.time}
+                  </Badge>
+                </Group>
+
+                <Text size='sm' c='dimmed'>
+                  {event.description}
+                </Text>
+              </Card>
+            ))}
+          </SimpleGrid>
         </Stack>
       </Container>
     </>

@@ -112,14 +112,16 @@ interface ActivityEvent {
 
 const PRIMARY_COL_HEIGHT = rem(300);
 const lessonsSchedule = [
-  { start: '8:30', end: '9:10', lesson: 'Lesson 1' },
-  { start: '9:30', end: '10:10', lesson: 'Lesson 2' },
-  { start: '10:15', end: '10:55', lesson: 'Lesson 3' },
-  { start: '11:00', end: '11:40', lesson: 'Lesson 4' },
-  { start: '11:50', end: '12:30', lesson: 'Lesson 5' },
-  { start: '13:00', end: '13:40', lesson: 'Lesson 6' },
-  { start: '13:50', end: '14:30', lesson: 'Lesson 7' },
-  { start: '14:35', end: '15:15', lesson: 'Lesson 8' },
+  { start: '8:30', end: '9:10', lesson: 'Урок 1' },
+  { start: '9:30', end: '10:10', lesson: 'Урок 2' },
+  { start: '10:15', end: '10:55', lesson: 'Урок 3' },
+  { start: '11:00', end: '11:40', lesson: 'Урок 4' },
+  { start: '11:50', end: '12:30', lesson: 'Урок 5' },
+  { start: '13:00', end: '13:40', lesson: 'Урок 6' },
+  { start: '13:50', end: '14:30', lesson: 'Урок 7' },
+  { start: '14:50', end: '15:30', lesson: 'Урок 8' },
+  { start: '15:35', end: '16:15', lesson: 'Урок 9' },
+  { start: '16:20', end: '17:00', lesson: 'Урок 10' },
 ];
 
 const ScheduleCards = ({ classes, user }: { classes: any[]; user: any }): JSX.Element => {
@@ -142,26 +144,15 @@ const ScheduleCards = ({ classes, user }: { classes: any[]; user: any }): JSX.El
           gradeLetter,
         }) => (
           <Group position='center'>
-            <Card
-              shadow='sm'
-              radius='md'
-              withBorder
-              w='10%'
-              padding={0}
-              h='100px'
-            >
+            <Card shadow='sm' radius='md' withBorder w='10%' padding={0} h='100px'>
               <Group align='center' position='center' h='100%'>
                 <Title order={3}>{classOrder}</Title>
+                <Text size='xs'>
+                  {lessonsSchedule[classOrder - 1].start}-{lessonsSchedule[classOrder - 1].end}
+                </Text>
               </Group>
             </Card>
-            <Card
-              shadow='sm'
-              padding='lg'
-              radius='md'
-              withBorder
-              w='70%'
-              h='100px'
-            >
+            <Card shadow='sm' padding='lg' radius='md' withBorder w='70%' h='100px'>
               <Group position='apart' mt='xs' mb='xs'>
                 <Text fw={500}>{subject}</Text>
                 <Badge color='lime' variant='light'>
